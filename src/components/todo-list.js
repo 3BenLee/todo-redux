@@ -1,20 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { dispatch } from 'rxjs/internal/observable/range';
 import { addTodo } from '../actions/todoAction';
-// import TodoItem from './todo-item'
 
 const TodoList = (props) => {
   console.log('hello', props.todos)
 
   const handleClick = () => {
-    alert('Clicked!');
-    dispatch(addTodo(text));
+    () => (this.props.addTodo());
   };
 
-  const todoItems = props.todos.map((todo) => {
+  const todoItems = props.todos.map((todo, index) => {
     return (
-      <li>
+      <li key={index}>
         {todo}
       </li>
     );
@@ -22,7 +19,7 @@ const TodoList = (props) => {
 
   return (
     <div>
-      <input placeholder='todo'/>
+      <input placeholder='todo' onChange={e => updateInput(e.target.value)}/>
       <button onClick={() => handleClick()}>Submit</button>
       <ul>
         {todoItems}
@@ -34,5 +31,7 @@ const TodoList = (props) => {
 const mapStateToProps = state => ({
   todos: state.todos
 });
+
+
 
 export default connect(mapStateToProps, { addTodo })(TodoList);
