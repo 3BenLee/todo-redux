@@ -1,0 +1,9 @@
+.notCompleted {
+  text-decoration: none;
+  list-style-type: none;
+}
+
+.completed {
+  text-decoration: line-through;
+  list-style-type: none;
+}

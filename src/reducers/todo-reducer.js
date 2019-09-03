@@ -1,21 +1,27 @@
-import { ADD_TODO, DELETE_TODO } from '../actions/types';
+import { ADD_TODO, COMPLETE_TODO } from '../actions/types';
 
-const todos = (state = ['buy soap'], action) => {
+const todos = (state = [], action) => {
   switch(action.type) {
     case ADD_TODO:
-      console.log('Hello');
       return [
         ...state,
         {
-          id: action.id,
-          text: action.text,
+          id: action.payload.id,
+          text: action.payload.text,
           completed: false
         },
       ];
-    case DELETE_TODO:
-      return [
-        ...state,
-      ];
+    case COMPLETE_TODO:
+      return state.map(todo => {
+        if (todo.id !== action.payload.id) {
+          return todo;
+        }
+
+        return {
+          ...todo,
+          completed: !todo.completed
+        };
+      })
     default: 
       return state
   }
