@@ -1,4 +1,4 @@
-import { ADD_TODO, COMPLETE_TODO } from '../actions/types';
+import { ADD_TODO, COMPLETE_TODO, SHOW_ALL, SHOW_INCOMPLETE } from '../actions/types';
 
 const todos = (state = [], action) => {
   switch(action.type) {
@@ -22,9 +22,34 @@ const todos = (state = [], action) => {
           completed: !todo.completed
         };
       })
+    case SHOW_ALL:
+      console.log('showAll', state);
+      return [...state]
+
+    case SHOW_INCOMPLETE:
+      return state.filter((todo) => todo.completed === false);
     default: 
-      return state
+      return state;
   }
-}
+};
+
+// const visibilityFilter = (state = 'SHOW_ALL', action) => {
+//   switch(action.type) {
+//     case 'SET_VISIBILITY_FILTER':
+//       return action.filter;
+//     default:
+//       return state;
+//   }
+// };
+
+// const todoApp = (state = {}, action) => {
+//   return {
+//     todos: todos(
+//       state.todos,
+//       action
+//     ),
+//     visibilityFilter: visibilityFilter(state.visibilityFilter, action)
+//   };
+// }
 
 export default todos;

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { addTodo, completeTodo } from '../actions/todoAction';
+import { addTodo, completeTodo, showAll, showIncomplete } from '../actions/todoAction';
 import './todo-list.css'
 
 class TodoList extends Component {
@@ -26,11 +26,20 @@ class TodoList extends Component {
     this.props.completeTodo(id);
   }
 
+  handleIncompleteFilter = () => {
+    this.props.showIncomplete();
+  }
+
+  handleShowAllFilter = () => {
+    this.props.showAll();
+  }
+
   render() {
 
     const { todos } = this.props
 
     const todoItems = todos && todos.length > 0 && todos.map((todo, index) => {
+      console.log('component', todos);
       return (
         <li
           className={todo.completed ? 'completed' : 'notCompleted'}
@@ -49,6 +58,8 @@ class TodoList extends Component {
         <ul>
           {todoItems}
         </ul>
+        <button onClick={() => this.handleIncompleteFilter()}>Incomplete</button>
+        <button onClick={() => this.handleShowAllFilter()}>Show All</button>
       </div>
     )
   }
@@ -58,4 +69,4 @@ const mapStateToProps = state => ({
   todos: state.todos
 });
 
-export default connect(mapStateToProps, { addTodo, completeTodo })(TodoList);
+export default connect(mapStateToProps, { addTodo, completeTodo, showIncomplete, showAll })(TodoList);
