@@ -18,7 +18,6 @@ class TodoList extends Component {
 
     this.props.addTodo(this.state.input);
     this.setState({ input: '' })
-    console.log('after', this.state.input, this.props.todos.id);
   }
 
   handleCompleteTodo = (id) => {
@@ -27,7 +26,8 @@ class TodoList extends Component {
   }
 
   handleIncompleteFilter = () => {
-    this.props.showIncomplete();
+    console.log('handle Inc',this.state.todos)
+    // this.props.showIncomplete();
   }
 
   handleShowAllFilter = () => {
@@ -36,10 +36,10 @@ class TodoList extends Component {
 
   render() {
 
-    const { todos } = this.props
+    const { todoList: { todoListItems } } = this.props
 
-    const todoItems = todos && todos.length > 0 && todos.map((todo, index) => {
-      console.log('component', todos);
+    // console.log('render', todos);
+    const todoItems = todoListItems && todoListItems.length > 0 && todoListItems.map((todo, index) => {
       return (
         <li
           className={todo.completed ? 'completed' : 'notCompleted'}
@@ -58,15 +58,18 @@ class TodoList extends Component {
         <ul>
           {todoItems}
         </ul>
-        <button onClick={() => this.handleIncompleteFilter()}>Incomplete</button>
-        <button onClick={() => this.handleShowAllFilter()}>Show All</button>
+        <button onClick={this.handleIncompleteFilter}>Incomplete</button>
+        <button onClick={this.handleShowAllFilter}>Show All</button>
       </div>
     )
   }
 }
 
-const mapStateToProps = state => ({
-  todos: state.todos
-});
+const mapStateToProps = state => {
+  console.log('asdasdadas', state);
+  return {
+    todoList: state.todoListItems
+  };
+};
 
 export default connect(mapStateToProps, { addTodo, completeTodo, showIncomplete, showAll })(TodoList);

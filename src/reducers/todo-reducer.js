@@ -1,22 +1,29 @@
 import { ADD_TODO, COMPLETE_TODO, SHOW_ALL, SHOW_INCOMPLETE } from '../actions/types';
 
-const todos = (state = [], action) => {
+const initialState = {
+  todoListItems: [],
+  filteredTodos: []
+}
+
+const todos = (state = initialState, action) => {
   switch(action.type) {
     case ADD_TODO:
-      return [
-        ...state,
-        {
-          id: action.payload.id,
-          text: action.payload.text,
-          completed: false
-        },
-      ];
+      console.log('add reducer', action);
+      return {
+        todoListItems: [
+          ...state.todoListItems,
+          {
+            id: action.payload.id,
+            text: action.payload.text,
+            completed: false
+          }
+        ]
+      }
     case COMPLETE_TODO:
       return state.map(todo => {
         if (todo.id !== action.payload.id) {
           return todo;
         }
-
         return {
           ...todo,
           completed: !todo.completed
@@ -27,7 +34,8 @@ const todos = (state = [], action) => {
       return [...state]
 
     case SHOW_INCOMPLETE:
-      return state.filter((todo) => todo.completed === false);
+      const newTodos = state.slice(0);
+      return newTodos.filter((todo) => todo.completed === false);
     default: 
       return state;
   }
