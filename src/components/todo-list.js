@@ -21,13 +21,11 @@ class TodoList extends Component {
   }
 
   handleCompleteTodo = (id) => {
-    console.log('handleComplete', id);
     this.props.completeTodo(id);
   }
 
   handleIncompleteFilter = () => {
-    console.log('handle Inc',this.state.todos)
-    // this.props.showIncomplete();
+    this.props.showIncomplete();
   }
 
   handleShowAllFilter = () => {
@@ -35,11 +33,7 @@ class TodoList extends Component {
   }
 
   render() {
-
-    const { todoList: { todoListItems } } = this.props
-
-    // console.log('render', todos);
-    const todoItems = todoListItems && todoListItems.length > 0 && todoListItems.map((todo, index) => {
+    const todoItems = this.props.todoListItems && this.props.todoListItems.length > 0 && this.props.todoListItems.map((todo, index) => {
       return (
         <li
           className={todo.completed ? 'completed' : 'notCompleted'}
@@ -66,9 +60,9 @@ class TodoList extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log('asdasdadas', state);
+  const { todoList: {todoItems} } = state;
   return {
-    todoList: state.todoListItems
+    todoListItems: todoItems
   };
 };
 

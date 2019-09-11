@@ -1,17 +1,27 @@
 import { ADD_TODO, COMPLETE_TODO, SHOW_ALL, SHOW_INCOMPLETE } from '../actions/types';
 
 const initialState = {
-  todoListItems: [],
-  filteredTodos: []
+  todoItems: [],
+  filteredTodos: [],
+  allItems: []
 }
 
-const todos = (state = initialState, action) => {
+const todoList = (state = initialState, action) => {
   switch(action.type) {
     case ADD_TODO:
       console.log('add reducer', action);
       return {
-        todoListItems: [
-          ...state.todoListItems,
+        ...state,
+        todoItems: [
+          ...state.todoItems,
+          {
+            id: action.payload.id,
+            text: action.payload.text,
+            completed: false
+          }
+        ],
+        allItems: [
+          ...state.todoItems,
           {
             id: action.payload.id,
             text: action.payload.text,
@@ -20,44 +30,39 @@ const todos = (state = initialState, action) => {
         ]
       }
     case COMPLETE_TODO:
-      return state.map(todo => {
-        if (todo.id !== action.payload.id) {
-          return todo;
+      // map items and change clicked item completed to true
+      const completedItems = state.todoItems.map((item) => {
+        if (item.id === action.payload.id) {
+          item.completed = true;
         }
-        return {
-          ...todo,
-          completed: !todo.completed
-        };
-      })
+        return item;
+      });
+      return {
+        ...state,
+        todoItems: completedItems
+      }
+
     case SHOW_ALL:
       console.log('showAll', state);
-      return [...state]
+      return {
+        ...state,
+        todoItems: [...state.allItems]
+      }
 
     case SHOW_INCOMPLETE:
-      const newTodos = state.slice(0);
-      return newTodos.filter((todo) => todo.completed === false);
+      const incompleteTodosList = state.todoItems.filter((item) => {
+        if (item.completed === false) {
+          return item;
+        }
+      });
+      return {
+        ...state,
+        todoItems: incompleteTodosList
+      }
+
     default: 
       return state;
   }
 };
 
-// const visibilityFilter = (state = 'SHOW_ALL', action) => {
-//   switch(action.type) {
-//     case 'SET_VISIBILITY_FILTER':
-//       return action.filter;
-//     default:
-//       return state;
-//   }
-// };
-
-// const todoApp = (state = {}, action) => {
-//   return {
-//     todos: todos(
-//       state.todos,
-//       action
-//     ),
-//     visibilityFilter: visibilityFilter(state.visibilityFilter, action)
-//   };
-// }
-
-export default todos;
+export default todoList;
